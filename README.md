@@ -58,3 +58,8 @@ https://github.com/heptio/authenticator
 
 ## Credits
 The contents of `terraform/` directory based on the official Terraform EKS example found here: https://github.com/terraform-providers/terraform-provider-aws/tree/master/examples/eks-getting-started
+
+## To Use KUBE with VSCODE
+
+1. export KUBE_EDITOR="code -w" 
+2. kubectl edit -n kube-system configmap/aws-auth (e.g.)
