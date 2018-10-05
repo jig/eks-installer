@@ -1,9 +1,16 @@
 #!/bin/bash -e
 
+# Cluster ENV Variables
+# export CLUSTER_NAME=...
+# export CLUSTER_SIZE=...
+# export CLUSTER_REGION=...
+# export CLUSTER_INSTANCE_TYPE=...
+# export CLUSTER_KEY_NAME=...
+
 CLUSTER_NAME="${CLUSTER_NAME:-terraform-eks-demo}"
-CLUSTER_SIZE="${CLUSTER_SIZE:-1}"
-CLUSTER_REGION="${CLUSTER_REGION:-us-west-2}"
-CLUSTER_INSTANCE_TYPE="${CLUSTER_INSTANCE_TYPE:-m4.large}"
+CLUSTER_SIZE="${CLUSTER_SIZE:-2}"
+CLUSTER_REGION="${CLUSTER_REGION:-eu-west-1}"
+CLUSTER_INSTANCE_TYPE="${CLUSTER_INSTANCE_TYPE:-m3.medium}"
 CLUSTER_KEY_NAME="${CLUSTER_KEY_NAME:-}"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -11,7 +18,18 @@ cd $DIR/../
 
 cd terraform/
 
-terraform init
+# Normal terraform init used by Codefresh
+#terraform init
+
+# S3 Bucket ENV Variables
+# export BUCKET_NAME=marc-...
+# export APPLICATION_NAME=...
+# export ENVIRONMENT=...
+
+# Our terraform init in order to initialize the S3 backend config
+terraform init -backend-config "bucket=$BUCKET_NAME" \
+-backend-config "region=$CLUSTER_REGION" \
+-backend-config "key=$APPLICATION_NAME/$ENVIRONMENT/terraform.tfstate"
 
 # try 3 times in case we are stuck waiting for EKS cluster to come up
 set +e

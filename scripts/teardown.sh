@@ -10,7 +10,11 @@ cd $DIR/../
 
 cd terraform/
 
-terraform init
+# Our terraform init in order to initialize the S3 backend config
+terraform init -backend-config "bucket=$BUCKET_NAME" \
+-backend-config "region=$CLUSTER_REGION" \
+-backend-config "key=$APPLICATION_NAME/$ENVIRONMENT/terraform.tfstate"
+
 terraform destroy -auto-approve \
     -var "cluster-name=${CLUSTER_NAME}" \
     -var "cluster-size=${CLUSTER_SIZE}" \

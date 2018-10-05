@@ -51,6 +51,8 @@ KUBECONFIG
 
   kubeca = "${aws_eks_cluster.demo.certificate_authority.0.data}"
   kubehost = "${aws_eks_cluster.demo.endpoint}"
+  vpc_id = "${aws_vpc.demo.id}"
+  subnet_ids = "${join(",",aws_subnet.demo.*.id)}"
 
 }
 
@@ -68,4 +70,12 @@ output "kubeca" {
 
 output "kubehost" {
   value = "${local.kubehost}"
+}
+
+output "vpc_id" {
+    value = "${local.vpc_id}"
+}
+
+output "subnet_ids" {
+  value = "${local.subnet_ids}"
 }
